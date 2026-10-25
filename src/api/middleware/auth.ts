@@ -2,11 +2,11 @@ import { auth } from "@/lib/auth";
 import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
 
-type Variables = {
+export type AuthVars = {
   session: NonNullable<Awaited<ReturnType<typeof auth.api.getSession>>>;
 };
 
-export const requireAuth = createMiddleware<{ Variables: Variables }>(
+export const requireAuth = createMiddleware<{ Variables: AuthVars }>(
   async (c, next) => {
     const session = await auth.api.getSession({
       headers: c.req.raw.headers,
