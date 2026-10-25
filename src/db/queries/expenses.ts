@@ -1,6 +1,6 @@
 import { db } from "@/lib/database";
 import { desc, eq } from "drizzle-orm";
-import { expenses, NewExpense } from "../schema/expenses";
+import { Expense, expenses, NewExpense } from "../schema/expenses";
 
 export async function createNewExpense(expense: NewExpense) {
   const [result] = await db
@@ -25,5 +25,22 @@ export async function getExpense(id: string) {
     .from(expenses)
     .where(eq(expenses.id, id))
     .limit(1);
+  return result;
+}
+
+export async function deleteExpense(id: string) {
+  const [result] = await db
+    .delete(expenses)
+    .where(eq(expenses.id, id))
+    .returning();
+  return result;
+}
+
+export async function updateExpense(id: string, data: Partial<Expense>) {
+  const [result] = await db
+    .update(expenses)
+    .set(data)
+    .where(eq(expenses.id, id))
+    .returning();
   return result;
 }
