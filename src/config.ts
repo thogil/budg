@@ -7,37 +7,11 @@ type Config = {
   DATABASE_URL: string;
 };
 
-function readEnvString(key: string): string {
-  const value = process.env[key];
-  if (typeof value !== "string") {
-    throw Error(`missing value for ${key}`);
-  }
-  return value;
-}
-
-function readEnvVariables(): Config {
-  const port = Number(readEnvString("PORT") ?? DEFAULT_PORT);
-  const environment = readEnvString("NODE_ENV");
-  const name = readEnvString("APP_NAME");
-  const databaseURL = readEnvString("DATABASE_URL");
-
-  return {
-    PORT: port,
-    NODE_ENV: environment,
-    APP_NAME: name,
-    DATABASE_URL: databaseURL,
-  };
-}
-
-function readConfig() {
-  try {
-    return readEnvVariables();
-  } catch (e) {
-    console.error(e);
-    process.exit(1);
-  }
-}
-
-const config = readConfig();
+const config: Config = {
+  PORT: Number(process.env.PORT) ?? DEFAULT_PORT,
+  NODE_ENV: process.env.NODE_ENV as string,
+  APP_NAME: process.env.APP_NAME as string,
+  DATABASE_URL: process.env.DATABASE_URL as string,
+};
 
 export default config;

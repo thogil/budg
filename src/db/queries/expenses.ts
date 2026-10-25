@@ -1,6 +1,6 @@
+import { db } from "@/lib/database";
 import { desc, eq } from "drizzle-orm";
-import { db } from "..";
-import { expenses, NewExpense } from "../schema";
+import { expenses, NewExpense } from "../schema/expenses";
 
 export async function createNewExpense(expense: NewExpense) {
   const [result] = await db

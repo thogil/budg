@@ -10,8 +10,8 @@ export const expenses = pgTable("expenses", {
   id: uuid().primaryKey().defaultRandom(),
   title: varchar({ length: 255 }).notNull(),
   total: numeric({ mode: "number", precision: 12, scale: 2 }).notNull(),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp()
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date()),
