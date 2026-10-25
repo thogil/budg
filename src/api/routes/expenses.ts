@@ -3,12 +3,14 @@ import {
   getAllExpenses,
   getExpense,
 } from "@/db/queries/expenses";
+import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
+import * as z from "zod";
 
-type NewExpense = {
-  title: string;
-  total: number;
-};
+const schema = z.object({
+  title: z.string().nonempty(),
+  total: z.number().gte(0),
+});
 
 const router = new Hono();
 
@@ -25,9 +27,9 @@ router.get("/:id", async (c) => {
   return c.json(expense);
 });
 
-router.post("/", async (c) => {
-  const expense = await c.req.json<NewExpense>();
-  const created = await createNewExpense(expense);
+router.post("/", zValidator("json", schema), async (c) => {
+  const data = c.req.valid("json");
+  const created = await createNewExpense(data);
   return c.json(created, 201);
 });
 
