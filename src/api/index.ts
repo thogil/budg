@@ -1,3 +1,4 @@
+import { auth } from "@/lib/auth";
 import { Hono } from "hono";
 import expenses from "./routes/expenses";
 
@@ -12,6 +13,7 @@ api.get("/health", async (c) => {
   return c.json({ status: "ok" });
 });
 
+api.on(["GET", "POST"], "/auth/*", (c) => auth.handler(c.req.raw));
 api.route("/expenses", expenses);
 
 export default api;
