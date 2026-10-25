@@ -8,7 +8,7 @@ import {
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { requireAuth } from "../middleware";
+import { requireAuth } from "../middleware/auth";
 import { CreateExpense, UpdateExpense } from "../validation/expenses";
 
 const router = new Hono();
