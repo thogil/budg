@@ -5,6 +5,7 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { categories } from "./categories";
 import { users } from "./users";
 
 export const expenses = pgTable("expenses", {
@@ -19,6 +20,9 @@ export const expenses = pgTable("expenses", {
   userId: uuid("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  categoryId: uuid("category_id").references(() => categories.id, {
+    onDelete: "set null",
+  }),
 });
 
 export type NewExpense = typeof expenses.$inferInsert;
